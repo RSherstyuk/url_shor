@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Сокращатель ссылок</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { background: #f5f5f5; padding: 30px; border-radius: 10px; }
+        input[type="url"] { width: 70%; padding: 10px; margin-right: 10px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 5px; }
+        .error { margin-top: 20px; padding: 15px; background: #f8d7da; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Сокращатель ссылок</h1>
+        
+        <form method="post" action="/shorten">
+            <input type="url" name="url" placeholder="Введите длинную ссылку..." required>
+
+            <button type="submit">Сократить</button>
+        </form>
+        
+        <div th:if="${shortUrl}" class="result">
+            <h3>✅ Ваша короткая ссылка:</h3>
+            <p><strong>Оригинальная:</strong> <span th:text="${originalUrl}"></span></p>
+            <p><strong>Сокращенная:</strong> 
+                <a th:href="${shortUrl}" th:text="${shortUrl}" target="_blank"></a>
+            </p>
+            <p><small>Статистика: <a th:href="@{/stats/{code}(code=${shortUrl.split('/')[3]})}">посмотреть</a></small></p>
+        </div>
+        
+        <div th:if="${error}" class="error">
+            <p th:text="${error}"></p>
+
+        </div>
+    </div>
+</body>
+</html>
